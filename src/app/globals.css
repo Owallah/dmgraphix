@@ -1,0 +1,320 @@
+/* ─── Google Fonts ───────────────────────────────────────────────────────────
+   Must come before @import "tailwindcss" — CSS spec requires @import first.
+   Syne      — geometric display font, bold and distinctive (headings)
+   DM Sans   — clean, modern humanist sans (body)
+   JetBrains Mono — monospaced for labels/code accents
+   ──────────────────────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ─── Tailwind CSS v4 ─────────────────────────────────────────────────────────
+   Single import replaces the old @tailwind base/components/utilities directives.
+   All theme customisation lives in @theme — no tailwind.config.ts needed.
+   ──────────────────────────────────────────────────────────────────────────── */
+@import "tailwindcss";
+
+/* ─── Theme Tokens (replaces tailwind.config.ts) ─────────────────────────────
+   All values here become Tailwind utilities automatically.
+   e.g. --color-brand-blue → bg-brand-blue, text-brand-blue, border-brand-blue
+   ──────────────────────────────────────────────────────────────────────────── */
+@theme {
+  /* Fonts */
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Brand palette */
+  --color-brand-blue:       #031d80;
+  --color-brand-blue-light: #0a2fa8;
+  --color-brand-blue-dark:  #020f4a;
+  --color-brand-orange:     #fa7805;
+  --color-brand-orange-light: #fb9033;
+  --color-brand-orange-dark:  #d96404;
+
+  /* Dark mode surfaces */
+  --color-dark-bg:      #020818;
+  --color-dark-surface: #050f2e;
+  --color-dark-card:    #071240;
+  --color-dark-border:  #0d1f5c;
+
+  /* Light mode surfaces */
+  --color-light-bg:      #f8f9ff;
+  --color-light-surface: #eef0ff;
+  --color-light-card:    #ffffff;
+  --color-light-border:  #dde0f0;
+
+  /* Text shades */
+  --color-text-primary:   #0a0e2a;
+  --color-text-secondary: #3d4270;
+  --color-text-muted:     #7a82b0;
+  --color-text-on-dark:   #e8eaf6;
+  --color-text-muted-dark:#8892cc;
+
+  /* Custom animations */
+  --animate-fade-up:       fadeUp 0.6s ease forwards;
+  --animate-fade-in:       fadeIn 0.5s ease forwards;
+  --animate-slide-left:    slideInLeft 0.6s ease forwards;
+  --animate-slide-right:   slideInRight 0.6s ease forwards;
+  --animate-float:         float 6s ease-in-out infinite;
+  --animate-marquee:       marquee 25s linear infinite;
+  --animate-glow:          glow 2s ease-in-out infinite alternate;
+
+  /* Keyframes */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-24px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(24px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-12px); }
+  }
+  @keyframes marquee {
+    from { transform: translateX(0%); }
+    to   { transform: translateX(-50%); }
+  }
+  @keyframes glow {
+    from { box-shadow: 0 0 20px color-mix(in srgb, var(--color-brand-orange) 30%, transparent); }
+    to   { box-shadow: 0 0 50px color-mix(in srgb, var(--color-brand-orange) 60%, transparent),
+                       0 0 90px color-mix(in srgb, var(--color-brand-orange) 20%, transparent); }
+  }
+  @keyframes loading {
+    0%   { transform: translateX(-100%); }
+    50%  { transform: translateX(0%); }
+    100% { transform: translateX(100%); }
+  }
+}
+
+/* ─── Dark mode variant ───────────────────────────────────────────────────────
+   Tailwind v4: use @variant to define custom variants.
+   The class strategy (next-themes adds "dark" to <html>) is the default.
+   ──────────────────────────────────────────────────────────────────────────── */
+@variant dark (&:where(.dark, .dark *));
+
+/* ─── Base styles ─────────────────────────────────────────────────────────────*/
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-light-bg);
+    color: var(--color-text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .dark body {
+    background-color: var(--color-dark-bg);
+    color: var(--color-text-on-dark);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-orange);
+    color: #ffffff;
+  }
+
+/* Custom cursor — hide native cursor on pointer devices */
+@media (pointer: fine) {
+  *, *::before, *::after {
+    cursor: none !important;
+  }
+}
+
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-light-border);
+    border-radius: 3px;
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    background: var(--color-dark-border);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-brand-blue);
+  }
+}
+
+/* ─── Component utilities ─────────────────────────────────────────────────────
+   Reusable multi-class patterns defined with @utility (Tailwind v4).
+   ──────────────────────────────────────────────────────────────────────────── */
+@utility section-container {
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  @media (width >= 40rem) { padding-inline: 1.5rem; }
+  @media (width >= 64rem) { padding-inline: 2rem; }
+}
+
+@utility gradient-text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(135deg, var(--color-brand-blue) 0%, var(--color-brand-orange) 100%);
+}
+
+@utility dark-gradient-text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(135deg, #7b8fff 0%, var(--color-brand-orange) 100%);
+}
+
+@utility section-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 1rem;
+  border-radius: 9999px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+  background: color-mix(in srgb, var(--color-brand-orange) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--color-brand-orange) 25%, transparent);
+  color: var(--color-brand-orange);
+}
+
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--color-brand-blue);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-brand-blue) 35%, transparent);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+
+  &:hover {
+    background-color: var(--color-brand-blue-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px color-mix(in srgb, var(--color-brand-blue) 45%, transparent);
+  }
+}
+
+@utility btn-orange {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: #ffffff;
+  background-color: var(--color-brand-orange);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-brand-orange) 35%, transparent);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+
+  &:hover {
+    background-color: var(--color-brand-orange-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px color-mix(in srgb, var(--color-brand-orange) 45%, transparent);
+  }
+}
+
+@utility btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-brand-blue);
+  background-color: transparent;
+  border: 1.5px solid var(--color-brand-blue);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    background-color: var(--color-brand-blue);
+    color: #ffffff;
+    transform: translateY(-2px);
+  }
+}
+
+@utility card-dark {
+  background-color: var(--color-dark-card);
+  border: 1px solid var(--color-dark-border);
+  border-radius: 1rem;
+}
+
+@utility card-light {
+  background-color: var(--color-light-card);
+  border: 1px solid var(--color-light-border);
+  border-radius: 1rem;
+  box-shadow: 0 2px 24px color-mix(in srgb, var(--color-brand-blue) 6%, transparent);
+}
+
+@utility noise-overlay {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+    border-radius: inherit;
+  }
+}
+
+/* ─── Animation delay utilities ───────────────────────────────────────────────*/
+@utility delay-100 { animation-delay: 100ms; }
+@utility delay-200 { animation-delay: 200ms; }
+@utility delay-300 { animation-delay: 300ms; }
+@utility delay-400 { animation-delay: 400ms; }
+@utility delay-500 { animation-delay: 500ms; }
+@utility delay-600 { animation-delay: 600ms; }
+@utility delay-700 { animation-delay: 700ms; }
+@utility delay-800 { animation-delay: 800ms; }
+
+/* ─── Reduced motion ──────────────────────────────────────────────────────────*/
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
