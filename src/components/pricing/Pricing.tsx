@@ -178,7 +178,7 @@ function FeatureItem({ text }: { text: string }) {
   return (
     <li className="flex items-start gap-3">
       <span
-        className="flex-shrink-0 mt-0.5 w-4 h-4 rounded-full flex items-center justify-center"
+        className="shrink-0 mt-0.5 w-4 h-4 rounded-full flex items-center justify-center"
         style={{ background: 'color-mix(in srgb, var(--color-brand-orange) 15%, transparent)' }}
       >
         <Check size={10} className="text-brand-orange" strokeWidth={3} />
